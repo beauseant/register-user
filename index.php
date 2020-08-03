@@ -21,18 +21,13 @@
 
 				}
 				if ($_GET["error"] == 2 or $_GET["error"] == 3 ) {
-
 					echo '
 						<div class="alert alert-danger" role="alert">
   							Usuario y/o contraseña no válida.
 						</div>
 						';
-				}
-
-
+				}				
 				$infoData = require('./info_config.php');
-
-
 			?>
 
 			<div class="container login-container">
@@ -51,7 +46,16 @@
 					                        </div>
 					                        <div class="form-group">
 					                            <input type="submit" class="btnSubmit" value="entrar" />
-					                        </div>                       
+					                        </div>   
+											<?php
+												//Permitimos que directamente el usuario quiera registrarse en una sesión con un host concreto sin usar el menu, directamente 
+												// se usa la url : http://localhost/index.php?hostId=1
+												if ( isset($_GET['hostId'] )){
+													$cleanHostId = preg_replace('/[^-a-zA-Z0-9_]/', '', $_GET['hostId']);
+													echo ('<input id="hostId" name="hostId" type="hidden" value="'. $cleanHostId .'">');
+												}
+											?>				
+
 					                </form>
 					                <p style="position:absolute;bottom:0;right: 10px;">
 					                		<a style="color:white;text-decoration: underline;" href="#myModal" data-toggle="modal" data-target="#myModal">información
@@ -97,8 +101,6 @@
 
 
 			</div>
-
-
 	</body>
 </html>
 	<script src="vendor/js/jquery.min.js"></script>

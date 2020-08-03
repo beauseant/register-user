@@ -34,6 +34,11 @@
 		$_SESSION['mail'] = $user -> getMail ();
 		$_SESSION['tipo'] = $user -> getTipo ();
 		$_SESSION['fullName'] = $user -> getFullName ();
+
+		if ( isset($_POST['hostId'] )){
+			$_SESSION['hostId'] = $_POST['hostId'];
+		}
+
 		
 
 		header('Location: home.php');

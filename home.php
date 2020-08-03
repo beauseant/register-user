@@ -15,11 +15,10 @@ $db = new registerDB ();
 $_SESSION['userId'] = $db -> insertUser ($_SESSION['name'], $_SESSION['mail'], $_SESSION['tipo'], $_SESSION['fullName']);
 
 
-if ( isset($_POST['sendForm'])) {
+if ( ( isset($_POST['sendForm']))  or ( isset($_SESSION['hostId']) )) {
 
     //si le damos varias veces el botón de enviar ignoramos las siguientes peticiones,
-    if ($_SESSION['Enviado']){
-
+    if ($_SESSION['Enviado'] ){
       echo '
             <div class="alert alert-danger" role="info">
                 Datos ya grabados en esta sesión, no vuelva a enviarlos.
@@ -36,7 +35,14 @@ if ( isset($_POST['sendForm'])) {
               }
           }
 
-          $host = $_POST['hostLab_'.  (htmlspecialchars($_COOKIE["labVisible"]))];
+          if (isset($_SESSION['hostId'])) {
+            $host = $_SESSION['hostId'];
+            $horas = 1;
+
+          }else {
+            $host = $_POST['hostLab_'.  (htmlspecialchars($_COOKIE["labVisible"]))];
+            $horas = $_POST['horas'];
+          }
 
 
 
@@ -45,17 +51,21 @@ if ( isset($_POST['sendForm'])) {
 
 
 
-
-          $result = $db -> saveConexion ($host, $_POST['horas'], $ip_address, $_SESSION['userId'] );
+          $result = $db -> saveConexion ($host, $horas, $ip_address, $_SESSION['userId'] );
 
           if ($result == -1) {
-            print_r ($_POST);
-            print ($ip_address);
             echo '
                     <div class="alert alert-danger" role="info">
                         Error grabando datos!!
                     </div>
                     ';
+            if (isset($_SESSION['hostId'])) {
+              echo '
+                      <div class="alert alert-danger" role="info">
+                          ¿Existe el host?
+                      </div>
+                      ';                
+              }
 
 
           }else{
@@ -111,8 +121,20 @@ if ( isset($_POST['sendForm'])) {
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
+
+          <?php
+              if ($_SESSION['tipo'] == 'personal') {
+                echo '
+                      <li class="nav-item">
+                        <a class="nav-link" href="qrs.php">ver códigos</a>
+                      </li>
+                ';
+
+              }
+          ?>
+
           <li class="nav-item">
-            <a class="nav-link" href="logout.php">Logout</a>
+            <a class="nav-link" href="logout.php">salir</a>
           </li>
         </ul>
       </div>

@@ -88,12 +88,28 @@ class registerDB {
 
 	}
 
+
+	function getHostsQR (){
+
+		$sql = 'SELECT host.id, host.nombre, laboratorio.nombre as labnombre FROM host INNER JOIN laboratorio ON host.id_laboratorio = laboratorio.id';
+
+		$result = $this -> conn->query($sql);
 		
+		if ($result->num_rows > 0) {			
+			$salida = $result->fetch_all(MYSQLI_ASSOC);
+		}else {
+		  $salida = -1;
+		}
+
+		return $salida;
+
+
+	}		
 
 	function saveConexion ($host, $horas, $ip_address, $id_usuario ){
 
 		$sql = sprintf ("insert into conexion (id_host, id_usuario, origen, horas) VALUES(%s, %s, '%s', %s)", $host, $id_usuario, $ip_address, $horas );
-		
+
 		if ($this -> conn->query($sql) ==TRUE) {
 			 $salida = 1;
 		}else {
