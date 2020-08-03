@@ -7,7 +7,9 @@
   	exit;
   }
 
-	$actual_link =   $_SERVER['HTTP_HOST']. '/index.php'; 
+	$actual_link =  echo '//'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']);
+
+	// $_SERVER['HTTP_HOST']. '/index.php'; 
     
 
 
