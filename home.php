@@ -128,6 +128,10 @@ if ( ( isset($_POST['sendForm']))  or ( isset($_SESSION['hostId']) )) {
                       <li class="nav-item">
                         <a class="nav-link" href="qrs.php">ver códigos</a>
                       </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="admin.php">ver listados</a>
+                      </li>
+
                 ';
 
               }
