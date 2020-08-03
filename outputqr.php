@@ -7,7 +7,7 @@
   	exit;
   }
 
-	$actual_link =  '//'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']);
+	$actual_link =  ''. $_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']);
 
 	// $_SERVER['HTTP_HOST']. '/index.php'; 
     
@@ -15,7 +15,7 @@
 
 	if (isset($_GET['url'])) {
 		$cleanHostId = preg_replace('/[^-a-zA-Z0-9_]/', '', $_GET['url']);
-		$link = $actual_link . '?hostId='. $cleanHostId;
+		$link = $actual_link . '/index.php?hostId='. $cleanHostId;
 	}else{
 		$link = 'Data not send';
 	}
@@ -24,7 +24,7 @@
 
 	include('./libs/phpqrcode/qrlib.php');
 
-	//echo $link;
+	
 
 	// outputs image directly into browser, as PNG stream
 	QRcode::png($link);
