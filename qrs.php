@@ -64,21 +64,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-
-          <?php
-              if ($_SESSION['tipo'] == 'personal') {
-                echo '
-                      <li class="nav-item">
-                        <a class="nav-link" href="qrs.php">ver códigos</a>
-                      </li>
-                ';
-
-              }
-          ?>
-
-          <li class="nav-item">
-            <a class="nav-link" href="logout.php">salir</a>
-          </li>
+            <?php   include 'includes/header.php'; ?>
         </ul>
       </div>
     </div>

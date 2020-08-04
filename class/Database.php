@@ -89,6 +89,30 @@ class registerDB {
 	}
 
 
+	function getAllConexionesFecha ($startDate, $endDate) {
+		$sql = "SELECT login, mail, usuario.nombre as username, status, session_date, create_date, reg_date,origen,horas,
+				host.nombre,conexion.origen, ip, laboratorio.nombre as labname FROM conexion 
+					INNER JOIN host ON conexion.
+						id_host=host.id 
+					INNER JOIN laboratorio ON host.id_laboratorio=laboratorio.id 
+					INNER JOIN usuario ON usuario.id=conexion.id_usuario 
+					WHERE date(reg_date) BETWEEN '".$startDate ."' AND '" . $endDate . "' ORDER BY reg_date DESC";
+
+
+		//print $sql;
+
+		$result = $this -> conn->query($sql);
+		
+		if ($result->num_rows >= 0) {			
+			$salida = $result->fetch_all(MYSQLI_ASSOC);
+		}else {
+		  $salida = -1;
+		}
+
+		return $salida;
+	}
+
+
 	function getHostsQR (){
 
 		$sql = 'SELECT host.id, host.nombre, laboratorio.nombre as labnombre FROM host INNER JOIN laboratorio ON host.id_laboratorio = laboratorio.id';

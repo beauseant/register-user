@@ -12,17 +12,6 @@
 
   $db = new registerDB ();
 
-  $hosts = $db->getHostsQR ();
-
-
-  if ($hosts == -1) {
-      echo '
-            <div class="alert alert-danger" role="info">
-                Error cargando hosts
-            </div>
-            ';
-      exit();
-  }
 
 
 ?>
@@ -64,65 +53,103 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-
-          <?php
-              if ($_SESSION['tipo'] == 'personal') {
-                echo '
-                      <li class="nav-item">
-                        <a class="nav-link" href="qrs.php">ver códigos</a>
-                      </li>
-                ';
-
-              }
-          ?>
-
-          <li class="nav-item">
-            <a class="nav-link" href="logout.php">salir</a>
-          </li>
+                      <?php   include 'includes/header.php'; ?>
         </ul>
       </div>
     </div>
   </nav>
 
 
-
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12 text-center">
-        <h1 class="mt-5">Seleccione un rango de fechas:</h1>
-      </div>
-    </div>
+<div class="container">
+            <div class="row">
+              <div class="col-lg-12 text-center">
+                <h1 class="mt-5"></h1>
+              </div>
+            </div>
   </div>
-
 
   <!-- Page Content -->
   <div class="container">
-
     
           <div class="container">
             <div class="row">
-              <div class="col-sm">
-                  <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width:50%">
-                        <i class="fa fa-calendar"></i>&nbsp;
-                        <span></span> <i class="fa fa-caret-down"></i>
-                  </div>
-
-                  <form id="selDates" class="form-inline" action="./admin.php">
-                  </form>
+              <div class="col-4">
+                  <span style="padding-top: 30px;">Introduzca el rango de fechas:</span>
               </div>
+
+                <div class="col-8">
+                    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
+                          <i class="fa fa-calendar"></i>&nbsp;
+                          <span></span> <i class="fa fa-caret-down"></i>
+                    </div>
+
+                    <form id="selDates" class="form-inline" action="./admin.php">
+                    </form>
+                </div>
           </div>
         </div>
-
-
-          <?php
-
-              echo ('MOSTRANDO DATOS DE' . htmlspecialchars($_COOKIE["startDate"]) . ' A '. htmlspecialchars($_COOKIE["endDate"]))
-          ?>
-
-
   </div>
 
+  <div class="container">
+            <div class="row">
+              <div class="col-lg-12 text-center">
+                <h3 class="mt-5"><?php echo ('Mostrando datos desde: ' . htmlspecialchars($_COOKIE["startDate"]) . ' a '. htmlspecialchars($_COOKIE["endDate"])) ?></h3>
+              </div>
+            </div>
+  </div>
 
+  <div class="container">
+
+      <table id="listConexiones"  class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>login</th>
+                    <th>tipo</th>
+                    <th>última conexión</th>
+                    <th>origen</th>
+                    <th>nombre</th>
+                    <th>fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+              <?php
+
+                    $conexiones = $db->getAllConexionesFecha (htmlspecialchars($_COOKIE["startDate"]), htmlspecialchars($_COOKIE["endDate"]));
+
+
+                    if ($conexiones == -1) {
+                        echo '
+                              <div class="alert alert-danger" role="info">
+                                  Error cargando hosts
+                              </div>
+                              ';
+                        exit();
+                    }
+
+
+
+                  foreach ($conexiones as $con) {
+                      $data = sprintf ('%s (%s), cuenta creada en %s. Última conexión:%s', $con['username'], $con['mail'], $con['create_date'], $con['reg_date']);
+                      echo ('<tr><td><button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="' . $data . '">'. $con['login'].'
+  
+</button></td><td>'.$con['status'] . '</td><td>'. $con['session_date'] .'</td><td>'.$con['origen'].'</td><td>'.$con['nombre'] .'</td><td>'.$con['reg_date'] .'</td>  </tr>');
+                  } 
+              ?>
+
+            </tbody>
+            <tfoot>
+                <tr>
+                     <th>login</th>
+                    <th>tipo</th>
+                    <th>última conexión</th>
+                    <th>origen</th>
+                    <th>nombre</th>
+                    <th>fecha</th>                                
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
 
 
 
@@ -134,15 +161,13 @@
   <script src="vendor/js/jquery.dataTables.min.js"></script>
   <script src="vendor/js/bootstrap-select.min.js"></script>
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+  <script type="text/javascript" src="vendor/js/moment.min.js"></script>
+  <script type="text/javascript" src="vendor/js/daterangepicker.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="vendor/css/daterangepicker.css" />
 
 
   <script>
-
-
           $(function() {
 
               var start = moment().subtract(29, 'days');
@@ -156,12 +181,12 @@
                   startDate: start,
                   endDate: end,
                   ranges: {
-                     'Today': [moment(), moment()],
-                     'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                     'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                     'This Month': [moment().startOf('month'), moment().endOf('month')],
-                     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                     'hoy': [moment(), moment()],
+                     'ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                     'últimos 7 días': [moment().subtract(6, 'days'), moment()],
+                     'últimos 30 días': [moment().subtract(29, 'days'), moment()],
+                     'este mes': [moment().startOf('month'), moment().endOf('month')],
+                     'mes anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                   }
               }, cb);
 
@@ -170,11 +195,11 @@
           });
 
         $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-            var startDate = picker.startDate.format('DD-MM-YYYY');
-            var endDate = picker.startDate.format('DD-MM-YYYY');
+            var startDate = picker.startDate.format('YYYY-MM-DD');
+            var endDate = picker.endDate.format('YYYY-MM-DD');
 
-            console.log(picker.startDate.format('DD-MM-YYYY'));
-            console.log(picker.endDate.format('DD-MM-YYYY'));
+            console.log(picker.startDate.format('YYYY-MM-DD'));
+            console.log(picker.endDate.format('YYYY-MM-DD'));
             
           document.cookie = "startDate=" + startDate;
           document.cookie = "endDate=" + endDate;
@@ -186,8 +211,8 @@
 
         $(document).ready(function() {
 
-          let startDate = moment($('#reportrange').data('daterangepicker').startDate).format('DD-MM-YYYY');
-          let endDate = moment($('#reportrange').data('daterangepicker').endDate).format('DD-MM-YYYY');
+          let startDate = moment($('#reportrange').data('daterangepicker').startDate).format('YYYY-MM-DD');
+          let endDate = moment($('#reportrange').data('daterangepicker').endDate).format('YYYY-MM-DD');
 
 
           document.cookie = "startDate=" + startDate;
@@ -195,12 +220,15 @@
 
           console.log(startDate);
 
-
-
+          $('#listConexiones').DataTable( {
+                  "order": [[ 2, "desc" ]]
+              } );
 
         } );
 
-
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
 
   </script>
 

@@ -121,25 +121,7 @@ if ( ( isset($_POST['sendForm']))  or ( isset($_SESSION['hostId']) )) {
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-
-          <?php
-              if ($_SESSION['tipo'] == 'personal') {
-                echo '
-                      <li class="nav-item">
-                        <a class="nav-link" href="qrs.php">ver códigos</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="admin.php">ver listados</a>
-                      </li>
-
-                ';
-
-              }
-          ?>
-
-          <li class="nav-item">
-            <a class="nav-link" href="logout.php">salir</a>
-          </li>
+            <?php   include 'includes/header.php'; ?>
         </ul>
       </div>
     </div>
@@ -272,7 +254,7 @@ if ( ( isset($_POST['sendForm']))  or ( isset($_SESSION['hostId']) )) {
                   </div>
                   <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                     <div class="card-body">
-                        <table id="listConexiones" class="display" style="width:100%">
+                        <table id="listConexiones"  class="table table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>puesto</th>
