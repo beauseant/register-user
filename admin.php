@@ -83,7 +83,7 @@
                           <span></span> <i class="fa fa-caret-down"></i>
                     </div>
 
-                    <form id="selDates" class="form-inline" action="./admin.php">
+                    <form id="selDates" class="form-inline" action="./admin.php"  method="post">
                     </form>
                 </div>
           </div>
