@@ -39,4 +39,4 @@ EXPOSE 443 80
 
 #Para ejectuarlo:
 #sudo podman build -t myphp_gd_https .
-#sudo podman run -it -v /home/breakthoven/Mis_Documentos/Empresa_Trabajillos/RepositorioGit/register-user/:/var/www/html -p 80:80 myphp_gd_https
+#sudo podman run -it -v /home/breakthoven/Mis_Documentos/Empresa_Trabajillos/RepositorioGit/register-user/:/var/www/html -p 80:80 -p 443:443 myphp_gd_https

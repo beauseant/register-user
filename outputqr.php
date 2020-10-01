@@ -15,7 +15,7 @@
 
 	if (isset($_GET['url'])) {
 		$cleanHostId = preg_replace('/[^-a-zA-Z0-9_]/', '', $_GET['url']);
-		$link = $actual_link . '/index.php?hostId='. $cleanHostId;
+		$link = 'https://' . $actual_link . '/index.php?hostId='. $cleanHostId;
 	}else{
 		$link = 'Data not send';
 	}
