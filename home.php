@@ -205,41 +205,52 @@ if ( ( isset($_POST['sendForm']))  or ( isset($_SESSION['hostId']) )) {
                   <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
                       
-                        <form action="home.php" method="post">
-                              <div class="form-check form-check-inline">
-                                    <div class="form-check form-check-inline">                                             
-                                        <select class="selectpicker" data-live-search="true" name="laboratorio" id="laboratorio" title="laboratorio">
-                                              <?php
-                                                  foreach ($laboratorios as $lab) {
-                                                    echo ('<option value="' . $lab['id'] . '" data-tokens="' . $lab['id'] . '">'. $lab['nombre'] . '</option>');
-                                                  }                                                  
-                                              ?>
-                                        </select>
+                        <?php
+                          if ($_SESSION['Enviado']) {
+                            echo '
+                                <p>Datos grabados correctamente, puede <a href="logout.php">cerrar</a> la sesión</p>
+                            ';
 
-                                        <?php
-                                             foreach ($laboratorios as $lab) {
-                                                    $primera = True;
-                                                    echo ('<div class="listaHost" id="hostLab_'. $lab['id'] .'" style="display:none;"> <select  name="hostLab_'. $lab['id'] .'"  class="selectpicker" data-live-search="true" title="máquina">');
-                                                    foreach ($labHost[$lab['id']] as $idhost => $host) {
-                                                      if ($primera == True){
-                                                        echo ('<option selected value="' . $idhost . '"   data-tokens="' . $idhost . '">'. $host['nombre'] . '</option>');
-                                                      }else {
-                                                        echo ('<option value="' . $idhost . '"   data-tokens="' . $idhost . '">'. $host['nombre'] . '</option>');
-                                                      }
-                                                    }
-                                                    echo ('</select></div>');
-                                                    
-                                              }  
-                                        ?>    
+                          }else {
+                      
+                              echo '
+                                  <form action="home.php" method="post">
+                                        <div class="form-check form-check-inline">
+                                              <div class="form-check form-check-inline">                                             
+                                                  <select class="selectpicker" data-live-search="true" name="laboratorio" id="laboratorio" title="laboratorio">
+                              ';
+                                            foreach ($laboratorios as $lab) {
+                                              echo ('<option value="' . $lab['id'] . '" data-tokens="' . $lab['id'] . '">'. $lab['nombre'] . '</option>');
+                                            }                                                  
+                                            echo'
+                                                  </select>
+                                            ';
+
+                                 foreach ($laboratorios as $lab) {
+                                        $primera = True;
+                                        echo ('<div class="listaHost" id="hostLab_'. $lab['id'] .'" style="display:none;"> <select  name="hostLab_'. $lab['id'] .'"  class="selectpicker" data-live-search="true" title="máquina">');
+                                        foreach ($labHost[$lab['id']] as $idhost => $host) {
+                                          if ($primera == True){
+                                            echo ('<option selected value="' . $idhost . '"   data-tokens="' . $idhost . '">'. $host['nombre'] . '</option>');
+                                          }else {
+                                            echo ('<option value="' . $idhost . '"   data-tokens="' . $idhost . '">'. $host['nombre'] . '</option>');
+                                          }
+                                        }
+                                        echo ('</select></div>');
+                                        
+                                  }  
+                                  echo '
                                         <label for="inputPassword" class="col-sm-2 col-form-label">duración:</label>    
                                         <input type="number" min="0" data-bind="value:replyNumber"  value="1" name="horas" style="width: 70px;" placeholder="1" class="form-control" id="horas" >
 
                                         <input id="sendForm" name="sendForm" type="hidden" value="1">
 
                                         <input style="margin:10px;" type="submit" class="btn btn-primary mb-2" value="enviar" />                                      
-                              </div>
-                        </form>
-
+                                          </div>
+                                    </form>
+                                  ';
+                            }
+                        ?>
 
                     </div>
                   </div>
